@@ -30,7 +30,6 @@
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
   }
-  /* ── HEADER ── */
   header {
     background: var(--white);
     border-bottom: 1px solid var(--border);
@@ -53,7 +52,6 @@
   .header-link { font-size: 13px; color: var(--text-sub); text-decoration: none; }
   .header-link:hover { color: var(--text); }
 
-  /* ── MAIN ── */
   main {
     flex: 1;
     display: flex;
@@ -72,7 +70,6 @@
     box-shadow: 0 4px 24px rgba(15,23,42,0.07);
   }
 
-  /* ── TRIAL BADGE ── */
   .trial-badge {
     background: var(--green-light);
     color: var(--green-dark);
@@ -100,48 +97,30 @@
     line-height: 1.6;
   }
 
-  /* ── STEPS ── */
-  .steps {
+  /* 特典リスト */
+  .benefits {
     display: flex;
-    align-items: center;
-    gap: 0;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 28px;
+    background: var(--green-pale);
+    border: 1px solid var(--green-light);
+    border-radius: 12px;
+    padding: 16px;
   }
-  .step {
+  .benefit-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-light);
-    flex: 1;
-    position: relative;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text);
   }
-  .step.active { color: var(--green-dark); }
-  .step.done { color: var(--green); }
-  .step-num {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--border);
-    color: var(--text-light);
-    font-size: 11px;
+  .benefit-check {
+    color: var(--green);
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
   }
-  .step.active .step-num { background: var(--green); color: white; }
-  .step.done .step-num { background: var(--green-light); color: var(--green-dark); }
-  .step-line {
-    flex: 1;
-    height: 2px;
-    background: var(--border);
-    margin: 0 4px;
-  }
-  .step-line.done { background: var(--green-light); }
 
-  /* ── FORM ── */
   .form { display: flex; flex-direction: column; gap: 16px; }
 
   .field { display: flex; flex-direction: column; gap: 6px; }
@@ -163,8 +142,6 @@
     transition: border-color 0.2s;
   }
   .field input:focus { border-color: var(--green); }
-  .field input.error { border-color: var(--red); }
-  .field-error { font-size: 12px; color: var(--red); }
 
   .btn-submit {
     width: 100%;
@@ -189,11 +166,7 @@
     background: var(--green-dark);
     transform: translateY(-1px);
   }
-  .btn-submit:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-    transform: none;
-  }
+  .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
 
   .form-note {
     font-size: 12px;
@@ -203,7 +176,6 @@
     margin-top: 4px;
   }
 
-  /* ── ERROR ALERT ── */
   .alert-error {
     background: #FEF2F2;
     border: 1px solid #FECACA;
@@ -214,15 +186,12 @@
     display: none;
     align-items: flex-start;
     gap: 8px;
+    margin-bottom: 16px;
   }
   .alert-error.show { display: flex; }
 
-  /* ── SUCCESS ── */
-  .success-view {
-    display: none;
-    text-align: center;
-    padding: 20px 0;
-  }
+  /* 完了画面 */
+  .success-view { display: none; text-align: center; padding: 20px 0; }
   .success-view.show { display: block; }
   .success-icon {
     width: 72px; height: 72px;
@@ -234,18 +203,8 @@
     font-size: 32px;
     margin: 0 auto 20px;
   }
-  .success-title {
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    letter-spacing: -0.5px;
-  }
-  .success-desc {
-    font-size: 14px;
-    color: var(--text-sub);
-    line-height: 1.7;
-    margin-bottom: 28px;
-  }
+  .success-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .success-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; margin-bottom: 28px; }
   .btn-go {
     display: inline-flex;
     align-items: center;
@@ -262,51 +221,6 @@
   }
   .btn-go:hover { background: var(--green-dark); }
 
-  /* ── STRIPE SECTION ── */
-  .stripe-section { display: none; }
-  .stripe-section.show { display: block; }
-  #stripe-card-element {
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 13px 14px;
-    background: var(--white);
-    transition: border-color 0.2s;
-  }
-  #stripe-card-element.StripeElement--focus { border-color: var(--green); }
-  #stripe-card-element.StripeElement--invalid { border-color: var(--red); }
-
-  .plan-summary {
-    background: var(--green-pale);
-    border: 1px solid var(--green-light);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .plan-name { font-size: 14px; font-weight: 700; }
-  .plan-trial { font-size: 12px; color: var(--green-dark); margin-top: 2px; }
-  .plan-price { font-size: 18px; font-weight: 800; color: var(--green-dark); }
-  .plan-price-sub { font-size: 11px; color: var(--text-sub); text-align: right; margin-top: 2px; }
-
-  /* ── DIVIDER ── */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 12px;
-    color: var(--text-light);
-    margin: 4px 0;
-  }
-  .divider::before, .divider::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* SPINNER */
   .spinner {
     width: 18px; height: 18px;
     border: 2px solid rgba(255,255,255,0.4);
@@ -321,40 +235,29 @@
 <body>
 
 <header>
-  <a href="/" class="logo">KaiGo<span class="logo-dot"></span></a>
+  <a href="https://kai-go-lp.vercel.app" class="logo">KaiGo<span class="logo-dot"></span></a>
   <a href="https://kaigolearning-app.vercel.app" class="header-link">ログインはこちら →</a>
 </header>
 
 <main>
   <div class="card">
 
-    <!-- STEP INDICATOR -->
-    <div class="steps">
-      <div class="step active" id="step1-indicator">
-        <div class="step-num">1</div>
-        <span>施設情報</span>
-      </div>
-      <div class="step-line" id="line1"></div>
-      <div class="step" id="step2-indicator">
-        <div class="step-num">2</div>
-        <span>お支払い</span>
-      </div>
-      <div class="step-line" id="line2"></div>
-      <div class="step" id="step3-indicator">
-        <div class="step-num">3</div>
-        <span>完了</span>
-      </div>
-    </div>
-
-    <!-- STEP 1: 施設情報 -->
-    <div id="step1">
+    <!-- 登録フォーム -->
+    <div id="signup-form">
       <div class="trial-badge">🎉 1ヶ月無料トライアル</div>
-      <h1 class="card-title">まずは施設情報を<br>入力してください</h1>
-      <p class="card-sub">登録完了後、30日間は無料でご利用いただけます。</p>
+      <h1 class="card-title">無料で始めましょう</h1>
+      <p class="card-sub">クレジットカード不要。30日間すべての機能を無料でお使いいただけます。</p>
 
-      <div class="alert-error" id="error1">
+      <div class="benefits">
+        <div class="benefit-item"><span class="benefit-check">✓</span>400問以上の介護特化コンテンツ</div>
+        <div class="benefit-item"><span class="benefit-check">✓</span>AI問題生成・多言語対応・進捗管理</div>
+        <div class="benefit-item"><span class="benefit-check">✓</span>30日間無料・クレジットカード不要</div>
+        <div class="benefit-item"><span class="benefit-check">✓</span>トライアル終了後は月額¥8,000</div>
+      </div>
+
+      <div class="alert-error" id="error-msg">
         <span>⚠️</span>
-        <span id="error1-msg">エラーが発生しました</span>
+        <span id="error-text">エラーが発生しました</span>
       </div>
 
       <div class="form">
@@ -374,52 +277,17 @@
           <label for="password">パスワード <span style="color:var(--red)">*</span></label>
           <input type="password" id="password" placeholder="8文字以上" autocomplete="new-password">
         </div>
-        <button class="btn-submit" id="btn-step1" onclick="goStep2()">
-          次へ：お支払い情報を入力 →
-        </button>
-        <p class="form-note">登録することで<a href="#" style="color:var(--text-sub)">利用規約</a>・<a href="#" style="color:var(--text-sub)">プライバシーポリシー</a>に同意したものとみなされます</p>
-      </div>
-    </div>
-
-    <!-- STEP 2: お支払い -->
-    <div id="step2" style="display:none;">
-      <h1 class="card-title">お支払い情報</h1>
-      <p class="card-sub">30日間の無料トライアル後に自動で課金が始まります。いつでもキャンセル可能です。</p>
-
-      <div class="plan-summary">
-        <div>
-          <div class="plan-name">KaiGo スタンダード</div>
-          <div class="plan-trial">✓ 30日間無料トライアル付き</div>
-        </div>
-        <div>
-          <div class="plan-price">¥8,000</div>
-          <div class="plan-price-sub">/月（税込）</div>
-        </div>
-      </div>
-
-      <div class="alert-error" id="error2">
-        <span>⚠️</span>
-        <span id="error2-msg">エラーが発生しました</span>
-      </div>
-
-      <div class="form">
-        <div class="field">
-          <label>クレジットカード情報</label>
-          <div id="stripe-card-element"></div>
-          <div id="card-errors" style="font-size:12px;color:var(--red);margin-top:4px;"></div>
-        </div>
-        <button class="btn-submit" id="btn-step2" onclick="submitSignup()">
+        <button class="btn-submit" id="btn-submit" onclick="submitSignup()">
           30日間無料で始める →
         </button>
-        <p class="form-note">🔒 カード情報はStripeで安全に管理されます。KaiGoには保存されません。</p>
-        <p style="text-align:center;margin-top:4px;">
-          <a href="#" onclick="backToStep1(); return false;" style="font-size:13px;color:var(--text-sub);">← 前に戻る</a>
+        <p class="form-note">
+          登録することで<a href="#" style="color:var(--text-sub)">利用規約</a>・<a href="#" style="color:var(--text-sub)">プライバシーポリシー</a>に同意したものとみなされます
         </p>
       </div>
     </div>
 
-    <!-- STEP 3: 完了 -->
-    <div id="step3" style="display:none;" class="success-view">
+    <!-- 完了画面 -->
+    <div id="success-view" class="success-view">
       <div class="success-icon">🎉</div>
       <h2 class="success-title">登録完了！</h2>
       <p class="success-desc">
@@ -427,7 +295,7 @@
         30日間の無料トライアルが始まります。<br>
         まずはスタッフを追加してみましょう。
       </p>
-      <a href="https://kaigolearning-app.vercel.app" class="btn-go" id="btn-go-app">
+      <a href="https://kaigolearning-app.vercel.app" class="btn-go">
         アプリを開く →
       </a>
     </div>
@@ -438,7 +306,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const firebaseConfig = {
@@ -454,42 +322,13 @@
   const auth = getAuth(app);
   const db   = getFirestore(app);
 
-  // グローバルに公開
-  window._firebase = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, doc, setDoc, serverTimestamp };
+  window._firebase = { auth, db, createUserWithEmailAndPassword, doc, setDoc, serverTimestamp };
 </script>
 
-<!-- Stripe -->
-<script src="https://js.stripe.com/v3/"></script>
-
 <script>
-  // ─── Stripe初期化 ───────────────────────────
-  // ★ テスト用公開可能キーをここに入れる（pk_test_xxxx）
-  const STRIPE_PK = 'pk_test_51TbvcV2KoKU1XiQO2J3eXyBCbombyyx8QhHAUd2bpmnIKvWi04fTykarac0EZJ76FJBlWkUQVuk5VCNV7ZySdNbA00y5ayZ1rr';
-
-  // ★ Vercelのサーバーレス関数のエンドポイント
   const API_BASE = 'https://kaigolearning-app.vercel.app';
 
-  const stripe  = Stripe(STRIPE_PK);
-  const elements = stripe.elements();
-  const cardElement = elements.create('card', {
-    style: {
-      base: {
-        fontSize: '15px',
-        fontFamily: '"DM Sans", "Noto Sans JP", sans-serif',
-        color: '#0F172A',
-        '::placeholder': { color: '#94A3B8' },
-      }
-    },
-    hidePostalCode: true,
-  });
-
-  let cardMounted = false;
-
-  // フォームデータ一時保存
-  window._formData = {};
-
-  // ─── STEP 1 → STEP 2 ───────────────────────
-  window.goStep2 = function() {
+  window.submitSignup = async function() {
     const facilityName = document.getElementById('facilityName').value.trim();
     const adminName    = document.getElementById('adminName').value.trim();
     const email        = document.getElementById('email').value.trim();
@@ -504,129 +343,64 @@
               : password.length < 8 ? 'パスワードは8文字以上にしてください'
               : null;
 
-    if (err) { showError('error1', 'error1-msg', err); return; }
-    hideError('error1');
+    if (err) { showError(err); return; }
+    hideError();
 
-    window._formData = { facilityName, adminName, email, password };
-
-    // Step2に遷移
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
-    setStep(2);
-
-    // Stripeカード要素をマウント（初回のみ）
-    if (!cardMounted) {
-      cardElement.mount('#stripe-card-element');
-      cardElement.on('change', e => {
-        document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
-      });
-      cardMounted = true;
-    }
-  };
-
-  // ─── 戻る ────────────────────────────────────
-  window.backToStep1 = function() {
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step1').style.display = 'block';
-    setStep(1);
-  };
-
-  // ─── STEP 2: 登録実行 ───────────────────────
-  window.submitSignup = async function() {
-    const btn = document.getElementById('btn-step2');
+    const btn = document.getElementById('btn-submit');
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> 処理中...';
-    hideError('error2');
+    btn.innerHTML = '<span class="spinner"></span> 登録中...';
 
     try {
       const { auth, db, createUserWithEmailAndPassword, doc, setDoc, serverTimestamp } = window._firebase;
-      const { facilityName, adminName, email, password } = window._formData;
 
-      // 1. PaymentMethodを作成
-      const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-        billing_details: { name: adminName, email },
-      });
-      if (pmError) throw new Error(pmError.message);
-
-      // 2. Firebase Authでアカウント作成
+      // 1. Firebase Auth でアカウント作成
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       const uid = cred.user.uid;
       const facilityId = `facility_${Date.now()}`;
+      const trialEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
-      // 3. Stripeサブスクリプション作成（Vercelのサーバーレス関数経由）
-      const idToken = await cred.user.getIdToken();
-      const res = await fetch(`${API_BASE}/api/create-subscription`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({
-          paymentMethodId: paymentMethod.id,
-          email,
-          facilityName,
-          adminName,
-          uid,
-          facilityId,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || '決済処理に失敗しました');
-
-      // 4. Firestoreに施設・管理者情報を書き込み
+      // 2. Firestoreに施設・管理者情報を書き込み
       await setDoc(doc(db, 'admins', uid), {
         facilityId,
         facilityName,
-        name:          adminName,
+        name:               adminName,
         email,
-        adminRole:     'owner',
-        maxUsers:      9999,
-        createdAt:     serverTimestamp(),
-        plan:          'standard',
-        trialEnd:      new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        stripeCustomerId:     data.customerId,
-        stripeSubscriptionId: data.subscriptionId,
-        needsOnboarding: true,
+        adminRole:          'owner',
+        maxUsers:           9999,
+        plan:               'standard',
+        subscriptionStatus: 'trialing',
+        trialEnd,
+        needsOnboarding:    true,
+        createdAt:          serverTimestamp(),
       });
 
-      // 5. 完了画面へ
+      // 3. 完了画面へ
       document.getElementById('success-facility').textContent = facilityName;
-      document.getElementById('step2').style.display = 'none';
-      document.getElementById('step3').style.display = 'block';
-      document.getElementById('step3').classList.add('show');
-      setStep(3);
+      document.getElementById('signup-form').style.display = 'none';
+      document.getElementById('success-view').classList.add('show');
 
-      // 3秒後に自動でアプリへ
+      // 4秒後にアプリへ自動リダイレクト
       setTimeout(() => {
         window.location.href = 'https://kaigolearning-app.vercel.app';
       }, 4000);
 
     } catch (err) {
-      showError('error2', 'error2-msg', err.message);
+      let msg = err.message;
+      if (err.code === 'auth/email-already-in-use') msg = 'このメールアドレスはすでに登録されています。';
+      if (err.code === 'auth/weak-password') msg = 'パスワードは8文字以上にしてください。';
+      showError(msg);
       btn.disabled = false;
       btn.innerHTML = '30日間無料で始める →';
     }
   };
 
-  // ─── ステップUI更新 ─────────────────────────
-  function setStep(n) {
-    for (let i = 1; i <= 3; i++) {
-      const ind = document.getElementById(`step${i}-indicator`);
-      ind.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
-    }
-    if (n > 1) document.getElementById('line1').className = 'step-line done';
-    if (n > 2) document.getElementById('line2').className = 'step-line done';
-  }
-
-  function showError(id, msgId, msg) {
-    const el = document.getElementById(id);
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
     el.classList.add('show');
-    document.getElementById(msgId).textContent = msg;
+    document.getElementById('error-text').textContent = msg;
   }
-  function hideError(id) {
-    document.getElementById(id).classList.remove('show');
+  function hideError() {
+    document.getElementById('error-msg').classList.remove('show');
   }
 </script>
 
