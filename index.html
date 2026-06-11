@@ -129,6 +129,11 @@
     font-weight: 600;
     color: var(--text);
   }
+  .field .label-note {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-light);
+  }
   .field input {
     width: 100%;
     padding: 12px 14px;
@@ -142,6 +147,7 @@
     transition: border-color 0.2s;
   }
   .field input:focus { border-color: var(--green); }
+  #pilotCode { text-transform: uppercase; letter-spacing: 1px; }
 
   .btn-submit {
     width: 100%;
@@ -249,7 +255,7 @@
       <p class="card-sub">クレジットカード不要。30日間すべての機能を無料でお使いいただけます。</p>
 
       <div class="benefits">
-        <div class="benefit-item"><span class="benefit-check">✓</span>400問以上の介護特化コンテンツ</div>
+        <div class="benefit-item"><span class="benefit-check">✓</span>600問以上の介護特化コンテンツ</div>
         <div class="benefit-item"><span class="benefit-check">✓</span>AI問題生成・多言語対応・進捗管理</div>
         <div class="benefit-item"><span class="benefit-check">✓</span>30日間無料・クレジットカード不要</div>
         <div class="benefit-item"><span class="benefit-check">✓</span>トライアル終了後は月額¥8,000</div>
@@ -277,11 +283,15 @@
           <label for="password">パスワード <span style="color:var(--red)">*</span></label>
           <input type="password" id="password" placeholder="8文字以上" autocomplete="new-password">
         </div>
+        <div class="field">
+          <label for="pilotCode">パイロットコード <span class="label-note">（お持ちの方のみ・任意）</span></label>
+          <input type="text" id="pilotCode" placeholder="例：KG-PILOT-XXXX" autocomplete="off">
+        </div>
         <button class="btn-submit" id="btn-submit" onclick="submitSignup()">
           30日間無料で始める →
         </button>
         <p class="form-note">
-          登録することで<a href="#" style="color:var(--text-sub)">利用規約</a>・<a href="#" style="color:var(--text-sub)">プライバシーポリシー</a>に同意したものとみなされます
+          登録することで<a href="https://kai-go-lp.vercel.app/legal/terms.html" target="_blank" rel="noopener" style="color:var(--text-sub)">利用規約</a>・<a href="https://kai-go-lp.vercel.app/legal/privacy.html" target="_blank" rel="noopener" style="color:var(--text-sub)">プライバシーポリシー</a>に同意したものとみなされます
         </p>
       </div>
     </div>
@@ -292,7 +302,7 @@
       <h2 class="success-title">登録完了！</h2>
       <p class="success-desc">
         <strong id="success-facility"></strong>の登録が完了しました。<br>
-        30日間の無料トライアルが始まります。<br>
+        <span id="success-plan-msg">30日間の無料トライアルが始まります。</span><br>
         まずはスタッフを追加してみましょう。
       </p>
       <a href="https://kaigolearning-app.vercel.app" class="btn-go">
@@ -306,8 +316,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
   const firebaseConfig = {
     apiKey:            "AIzaSyBEGTllKWCiVqNt1HUR7mWcSnQRzWUpaFI",
@@ -320,19 +329,33 @@
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db   = getFirestore(app);
 
-  window._firebase = { auth, db, createUserWithEmailAndPassword, doc, setDoc, serverTimestamp };
+  window._firebase = { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword };
 </script>
 
 <script>
-  const API_BASE = 'https://kaigolearning-app.vercel.app';
+  // 契約ステータス（trial / pilot）の付与はサーバー側で行う。
+  // ここでは Auth ユーザーを作り、IDトークンを付けて /api/signup を呼ぶだけ。
+  const SIGNUP_API = 'https://kaigolearning-app.vercel.app/api/signup';
+
+  async function callSignupApi(user, payload) {
+    const idToken = await user.getIdToken();
+    const r = await fetch(SIGNUP_API, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+      body:    JSON.stringify(payload),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || '登録処理に失敗しました');
+    return data;
+  }
 
   window.submitSignup = async function() {
     const facilityName = document.getElementById('facilityName').value.trim();
     const adminName    = document.getElementById('adminName').value.trim();
     const email        = document.getElementById('email').value.trim();
     const password     = document.getElementById('password').value;
+    const pilotCode    = document.getElementById('pilotCode').value.trim().toUpperCase();
 
     // バリデーション
     const err = !facilityName ? '施設名を入力してください'
@@ -350,32 +373,41 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> 登録中...';
 
+    const { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = window._firebase;
+    const payload = { facilityName, adminName, pilotCode };
+
     try {
-      const { auth, db, createUserWithEmailAndPassword, doc, setDoc, serverTimestamp } = window._firebase;
+      let user;
+      try {
+        // 1. Firebase Auth でアカウント作成
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        user = cred.user;
+      } catch (e) {
+        // すでにAuthユーザーが存在する場合（前回登録が途中で失敗したケース）
+        // 同じ資格でサインインし、サーバー登録だけをやり直す
+        if (e.code === 'auth/email-already-in-use') {
+          try {
+            const cred = await signInWithEmailAndPassword(auth, email, password);
+            user = cred.user;
+          } catch {
+            throw new Error('このメールアドレスはすでに登録されています。');
+          }
+        } else if (e.code === 'auth/weak-password') {
+          throw new Error('パスワードは8文字以上にしてください。');
+        } else {
+          throw e;
+        }
+      }
 
-      // 1. Firebase Auth でアカウント作成
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = cred.user.uid;
-      const facilityId = `facility_${Date.now()}`;
-      const trialEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      // 2. サーバー側で施設・契約ステータスを作成
+      const result = await callSignupApi(user, payload);
 
-      // 2. Firestoreに施設・管理者情報を書き込み
-      await setDoc(doc(db, 'admins', uid), {
-        facilityId,
-        facilityName,
-        name:               adminName,
-        email,
-        adminRole:          'owner',
-        maxUsers:           9999,
-        plan:               'standard',
-        subscriptionStatus: 'trialing',
-        trialEnd,
-        needsOnboarding:    true,
-        createdAt:          serverTimestamp(),
-      });
-
-      // 3. 完了画面へ
+      // 3. 完了画面へ（プランに応じてメッセージを切り替え）
       document.getElementById('success-facility').textContent = facilityName;
+      document.getElementById('success-plan-msg').textContent =
+        result.plan === 'pilot'
+          ? 'パイロット利用としてご登録されました。'
+          : '30日間の無料トライアルが始まります。';
       document.getElementById('signup-form').style.display = 'none';
       document.getElementById('success-view').classList.add('show');
 
@@ -384,11 +416,8 @@
         window.location.href = 'https://kaigolearning-app.vercel.app';
       }, 4000);
 
-    } catch (err) {
-      let msg = err.message;
-      if (err.code === 'auth/email-already-in-use') msg = 'このメールアドレスはすでに登録されています。';
-      if (err.code === 'auth/weak-password') msg = 'パスワードは8文字以上にしてください。';
-      showError(msg);
+    } catch (e) {
+      showError(e.message || 'エラーが発生しました');
       btn.disabled = false;
       btn.innerHTML = '30日間無料で始める →';
     }
