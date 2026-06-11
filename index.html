@@ -147,7 +147,6 @@
     transition: border-color 0.2s;
   }
   .field input:focus { border-color: var(--green); }
-  #pilotCode { text-transform: uppercase; letter-spacing: 1px; }
 
   .btn-submit {
     width: 100%;
@@ -283,10 +282,6 @@
           <label for="password">パスワード <span style="color:var(--red)">*</span></label>
           <input type="password" id="password" placeholder="8文字以上" autocomplete="new-password">
         </div>
-        <div class="field">
-          <label for="pilotCode">パイロットコード <span class="label-note">（お持ちの方のみ・任意）</span></label>
-          <input type="text" id="pilotCode" placeholder="例：KG-PILOT-XXXX" autocomplete="off">
-        </div>
         <button class="btn-submit" id="btn-submit" onclick="submitSignup()">
           30日間無料で始める →
         </button>
@@ -355,7 +350,6 @@
     const adminName    = document.getElementById('adminName').value.trim();
     const email        = document.getElementById('email').value.trim();
     const password     = document.getElementById('password').value;
-    const pilotCode    = document.getElementById('pilotCode').value.trim().toUpperCase();
 
     // バリデーション
     const err = !facilityName ? '施設名を入力してください'
@@ -374,7 +368,7 @@
     btn.innerHTML = '<span class="spinner"></span> 登録中...';
 
     const { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = window._firebase;
-    const payload = { facilityName, adminName, pilotCode };
+    const payload = { facilityName, adminName };
 
     try {
       let user;
