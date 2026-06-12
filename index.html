@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KaiGo — 無料で始める</title>
+<title>KaiGo — 導入のご相談</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -94,10 +94,9 @@
     font-size: 14px;
     color: var(--text-sub);
     margin-bottom: 28px;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
-  /* 特典リスト */
   .benefits {
     display: flex;
     flex-direction: column;
@@ -121,36 +120,44 @@
     flex-shrink: 0;
   }
 
-  .form { display: flex; flex-direction: column; gap: 16px; }
-
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label {
+  /* お問い合わせ時の記入案内 */
+  .guide {
+    background: #F8FAFB;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+  }
+  .guide-title {
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text);
+    margin-bottom: 10px;
   }
-  .field .label-note {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--text-light);
+  .guide-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
-  .field input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-size: 15px;
-    font-family: inherit;
-    color: var(--text);
-    background: var(--white);
-    outline: none;
-    transition: border-color 0.2s;
+  .guide-list li {
+    font-size: 13px;
+    color: var(--text-sub);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
   }
-  .field input:focus { border-color: var(--green); }
+  .guide-list li::before {
+    content: "・";
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
 
-  .btn-submit {
+  .btn-mail {
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     background: var(--green);
     color: white;
     font-size: 16px;
@@ -163,78 +170,23 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-decoration: none;
     transition: background 0.2s, transform 0.15s;
     box-shadow: 0 4px 16px rgba(16,185,129,0.3);
-    margin-top: 4px;
   }
-  .btn-submit:hover:not(:disabled) {
+  .btn-mail:hover {
     background: var(--green-dark);
     transform: translateY(-1px);
   }
-  .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
 
-  .form-note {
+  .mail-fallback {
     font-size: 12px;
     color: var(--text-light);
     text-align: center;
     line-height: 1.6;
-    margin-top: 4px;
+    margin-top: 14px;
   }
-
-  .alert-error {
-    background: #FEF2F2;
-    border: 1px solid #FECACA;
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-size: 13px;
-    color: #DC2626;
-    display: none;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .alert-error.show { display: flex; }
-
-  /* 完了画面 */
-  .success-view { display: none; text-align: center; padding: 20px 0; }
-  .success-view.show { display: block; }
-  .success-icon {
-    width: 72px; height: 72px;
-    background: var(--green-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    margin: 0 auto 20px;
-  }
-  .success-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
-  .success-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; margin-bottom: 28px; }
-  .btn-go {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--green);
-    color: white;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 14px 28px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: background 0.2s;
-    box-shadow: 0 4px 16px rgba(16,185,129,0.3);
-  }
-  .btn-go:hover { background: var(--green-dark); }
-
-  .spinner {
-    width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: inline-block;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .mail-fallback a { color: var(--text-sub); }
 </style>
 </head>
 <body>
@@ -247,185 +199,39 @@
 <main>
   <div class="card">
 
-    <!-- 登録フォーム -->
-    <div id="signup-form">
-      <div class="trial-badge">🎉 1ヶ月無料トライアル</div>
-      <h1 class="card-title">無料で始めましょう</h1>
-      <p class="card-sub">クレジットカード不要。30日間すべての機能を無料でお使いいただけます。</p>
+    <div class="trial-badge">🤝 導入のご相談</div>
+    <h1 class="card-title">KaiGoの導入について</h1>
+    <p class="card-sub">
+      KaiGoは現在、登録支援機関を通じて介護施設の皆様にご提供しています。
+      導入をご検討の施設様・支援機関様は、下記よりお気軽にお問い合わせください。
+    </p>
 
-      <div class="benefits">
-        <div class="benefit-item"><span class="benefit-check">✓</span>600問以上の介護特化コンテンツ</div>
-        <div class="benefit-item"><span class="benefit-check">✓</span>AI問題生成・多言語対応・進捗管理</div>
-        <div class="benefit-item"><span class="benefit-check">✓</span>30日間無料・クレジットカード不要</div>
-        <div class="benefit-item"><span class="benefit-check">✓</span>トライアル終了後は月額¥8,000</div>
-      </div>
-
-      <div class="alert-error" id="error-msg">
-        <span>⚠️</span>
-        <span id="error-text">エラーが発生しました</span>
-      </div>
-
-      <div class="form">
-        <div class="field">
-          <label for="facilityName">施設名 <span style="color:var(--red)">*</span></label>
-          <input type="text" id="facilityName" placeholder="例：介護施設さくら" autocomplete="organization">
-        </div>
-        <div class="field">
-          <label for="adminName">担当者名 <span style="color:var(--red)">*</span></label>
-          <input type="text" id="adminName" placeholder="例：山田 太郎" autocomplete="name">
-        </div>
-        <div class="field">
-          <label for="email">メールアドレス <span style="color:var(--red)">*</span></label>
-          <input type="email" id="email" placeholder="例：yamada@facility.jp" autocomplete="email">
-        </div>
-        <div class="field">
-          <label for="password">パスワード <span style="color:var(--red)">*</span></label>
-          <input type="password" id="password" placeholder="8文字以上" autocomplete="new-password">
-        </div>
-        <button class="btn-submit" id="btn-submit" onclick="submitSignup()">
-          30日間無料で始める →
-        </button>
-        <p class="form-note">
-          登録することで<a href="https://kai-go-lp.vercel.app/legal/terms.html" target="_blank" rel="noopener" style="color:var(--text-sub)">利用規約</a>・<a href="https://kai-go-lp.vercel.app/legal/privacy.html" target="_blank" rel="noopener" style="color:var(--text-sub)">プライバシーポリシー</a>に同意したものとみなされます
-        </p>
-      </div>
+    <div class="benefits">
+      <div class="benefit-item"><span class="benefit-check">✓</span>600問以上の介護特化コンテンツ</div>
+      <div class="benefit-item"><span class="benefit-check">✓</span>AI問題生成・多言語対応・進捗管理</div>
+      <div class="benefit-item"><span class="benefit-check">✓</span>資料からAIが問題を自動生成</div>
+      <div class="benefit-item"><span class="benefit-check">✓</span>登録支援機関向けの管理機能</div>
     </div>
 
-    <!-- 完了画面 -->
-    <div id="success-view" class="success-view">
-      <div class="success-icon">🎉</div>
-      <h2 class="success-title">登録完了！</h2>
-      <p class="success-desc">
-        <strong id="success-facility"></strong>の登録が完了しました。<br>
-        <span id="success-plan-msg">30日間の無料トライアルが始まります。</span><br>
-        まずはスタッフを追加してみましょう。
-      </p>
-      <a href="https://kaigolearning-app.vercel.app" class="btn-go">
-        アプリを開く →
-      </a>
+    <div class="guide">
+      <div class="guide-title">お問い合わせの際は、以下をお書き添えください</div>
+      <ul class="guide-list">
+        <li>施設名または機関名</li>
+        <li>お立場（介護施設 / 登録支援機関 のいずれか）</li>
+        <li>ご連絡先（お電話番号など）</li>
+        <li>ご相談内容（任意）</li>
+      </ul>
     </div>
+
+    <a class="btn-mail" href="mailto:kaiplus.official@gmail.com?subject=KaiGo導入のご相談&body=施設名・機関名：%0D%0Aお立場（介護施設／登録支援機関）：%0D%0Aご連絡先：%0D%0Aご相談内容：%0D%0A">
+      メールで問い合わせる →
+    </a>
+    <p class="mail-fallback">
+      ボタンが動作しない場合は、<a href="mailto:kaiplus.official@gmail.com">kaiplus.official@gmail.com</a> まで直接ご連絡ください
+    </p>
 
   </div>
 </main>
-
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey:            "AIzaSyBEGTllKWCiVqNt1HUR7mWcSnQRzWUpaFI",
-    authDomain:        "carego-app-893be.firebaseapp.com",
-    projectId:         "carego-app-893be",
-    storageBucket:     "carego-app-893be.firebasestorage.app",
-    messagingSenderId: "34055976814",
-    appId:             "1:34055976814:web:0364b2777a8c6c223a337f",
-  };
-
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  window._firebase = { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword };
-</script>
-
-<script>
-  // 契約ステータス（trial / pilot）の付与はサーバー側で行う。
-  // ここでは Auth ユーザーを作り、IDトークンを付けて /api/signup を呼ぶだけ。
-  const SIGNUP_API = 'https://kaigolearning-app.vercel.app/api/signup';
-
-  async function callSignupApi(user, payload) {
-    const idToken = await user.getIdToken();
-    const r = await fetch(SIGNUP_API, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
-      body:    JSON.stringify(payload),
-    });
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || '登録処理に失敗しました');
-    return data;
-  }
-
-  window.submitSignup = async function() {
-    const facilityName = document.getElementById('facilityName').value.trim();
-    const adminName    = document.getElementById('adminName').value.trim();
-    const email        = document.getElementById('email').value.trim();
-    const password     = document.getElementById('password').value;
-
-    // バリデーション
-    const err = !facilityName ? '施設名を入力してください'
-              : !adminName    ? '担当者名を入力してください'
-              : !email        ? 'メールアドレスを入力してください'
-              : !email.includes('@') ? '正しいメールアドレスを入力してください'
-              : !password     ? 'パスワードを入力してください'
-              : password.length < 8 ? 'パスワードは8文字以上にしてください'
-              : null;
-
-    if (err) { showError(err); return; }
-    hideError();
-
-    const btn = document.getElementById('btn-submit');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> 登録中...';
-
-    const { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = window._firebase;
-    const payload = { facilityName, adminName };
-
-    try {
-      let user;
-      try {
-        // 1. Firebase Auth でアカウント作成
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        user = cred.user;
-      } catch (e) {
-        // すでにAuthユーザーが存在する場合（前回登録が途中で失敗したケース）
-        // 同じ資格でサインインし、サーバー登録だけをやり直す
-        if (e.code === 'auth/email-already-in-use') {
-          try {
-            const cred = await signInWithEmailAndPassword(auth, email, password);
-            user = cred.user;
-          } catch {
-            throw new Error('このメールアドレスはすでに登録されています。');
-          }
-        } else if (e.code === 'auth/weak-password') {
-          throw new Error('パスワードは8文字以上にしてください。');
-        } else {
-          throw e;
-        }
-      }
-
-      // 2. サーバー側で施設・契約ステータスを作成
-      const result = await callSignupApi(user, payload);
-
-      // 3. 完了画面へ（プランに応じてメッセージを切り替え）
-      document.getElementById('success-facility').textContent = facilityName;
-      document.getElementById('success-plan-msg').textContent =
-        result.plan === 'pilot'
-          ? 'パイロット利用としてご登録されました。'
-          : '30日間の無料トライアルが始まります。';
-      document.getElementById('signup-form').style.display = 'none';
-      document.getElementById('success-view').classList.add('show');
-
-      // 4秒後にアプリへ自動リダイレクト
-      setTimeout(() => {
-        window.location.href = 'https://kaigolearning-app.vercel.app';
-      }, 4000);
-
-    } catch (e) {
-      showError(e.message || 'エラーが発生しました');
-      btn.disabled = false;
-      btn.innerHTML = '30日間無料で始める →';
-    }
-  };
-
-  function showError(msg) {
-    const el = document.getElementById('error-msg');
-    el.classList.add('show');
-    document.getElementById('error-text').textContent = msg;
-  }
-  function hideError() {
-    document.getElementById('error-msg').classList.remove('show');
-  }
-</script>
 
 </body>
 </html>
